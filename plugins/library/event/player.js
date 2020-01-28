@@ -1,23 +1,4 @@
-module.exports.event = {
-   store: [],
-   on: function (event, listener) {
-      var listeners = jx.util.auto(jx.event.store, event, []);
-      if (events[event] && listeners.length === 0) {
-         events[event](function (data) {
-            jx.event.fire(event, data);
-         });
-      }
-      return listeners.push(listener);
-   },
-   fire: function (event, data) {
-      var listeners = jx.util.auto(jx.event.store, event, []);
-      return listeners.map(function (listener) {
-         return listener(data);
-      });
-   }
-};
-
-module.exports.event.player = {
+module.exports = {
    break: function (listener) {
       jx.event.on('blockBreak', function (event) {
          listener(jx.player(event.player), event.block, event.player, event);
@@ -115,37 +96,6 @@ module.exports.event.player = {
    wake: function (listener) {
       jx.event.on('playerBedLeave', function (event) {
          listener(jx.player(event.player), event.player, event);
-      });
-   }
-};
-
-module.exports.event.entity = {
-   damage: function (listener) {
-      jx.event.on('entityDamage', function (event) {
-         listener(event.cause.toString().toLowerCase(), event.entity, event.damager, event.finalDamage, event);
-      });
-   },
-   heal: function (listener) {
-      jx.event.on('entityRegainHealth', function (event) {
-         listener(event.entity, Number(event.amount), event);
-      });
-   },
-   spawn: function (listener) {
-      jx.event.on('entitySpawn', function (event) {
-         listener(event.entity, event.location, event);
-      });
-   },
-   target: function (listener) {
-      jx.event.on('entityTarget', function (event) {
-         listener(event.reason.name().toLowerCase(), event.entity, event.target, event);
-      });
-   },
-   transform: function (listener) {
-      jx.event.on('creeperPower', function (event) {
-         listener('creeper', event.entity);
-      });
-      jx.event.on('pigZap', function (event) {
-         listener('pig', event.entity);
       });
    }
 };
