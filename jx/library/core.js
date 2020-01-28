@@ -3,8 +3,9 @@ var event = require('./event');
 var data = require('./data');
 var iface = require('./interface');
 var perm = require('./perm');
-var spawn = require('./spawn');
 var rand = require('./rand');
+var spawn = require('./spawn');
+var storage = require('./storage');
 var util = require('./util');
 module.exports = {
    _: function (object) {
@@ -133,6 +134,7 @@ module.exports = {
    },
    rand: rand,
    spawn: spawn,
+   storage: storage,
    text: function (player, message, mode) {
       player = jx.player(player).instance;
       if (mode === true) {
