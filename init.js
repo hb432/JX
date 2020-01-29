@@ -9,6 +9,12 @@ global.jxinit.forEach(function (script) {
    script(jx);
 });
 
+// global data storage
+global.___data___ = {
+   server: persist('jx-server'),
+   player: {}
+};
+
 // report
 console.log('JX Initialized.');
 

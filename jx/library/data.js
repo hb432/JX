@@ -1,8 +1,5 @@
 module.exports = {
-   store: {
-      server: persist('jx-server'),
-      player: {}
-   },
+   store: global.___data___,
    /**
     * access persistent server data
     * @param {...string} [path] the data path
