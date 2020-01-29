@@ -15,7 +15,7 @@ global.___data___ = {
 };
 
 // import module
-var jx = require('./jx/library/core');
+var jx = require('./index');
 
 // execute pushed init scripts
 global.___init___.array.forEach(function (script) {
@@ -29,4 +29,4 @@ global.___init___.state = false;
 console.log('JX Initialized.');
 
 // todo
-// documentation for jx.text, jx.util, jx.ty, jx.event
+// documentation for jx.text, jx.util, jx.ty, jx.event, jx.$/block, jx.$/entity, jx.$/item

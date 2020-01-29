@@ -1,23 +1,14 @@
+var wrappers = require('./wrappers');
 var api = require('./api');
 var event = require('./event');
 var data = require('./data');
-var iface = require('./interface');
+var interface_ = require('./interface');
 var perm = require('./perm');
 var rand = require('./rand');
 var spawn = require('./spawn');
 var storage = require('./storage');
 var util = require('./util');
 module.exports = {
-   _: function (object) {
-      var type = jx.ty(object);
-      if (type.contains('.entity.')) {
-         return jx.api.entityType[object.type];
-      } else if (type.contains('.block.') || type.contains('ItemStack')) {
-         return jx.api.material[object.type];
-      } else {
-         return null;
-      }
-   },
    api: api,
    event: event,
    /**
@@ -85,7 +76,7 @@ module.exports = {
       server.dispatchCommand(server.consoleSender, command.toString());
    },
    data: data,
-   interface: iface,
+   interface: interface_,
    perm: perm,
    /**
     * fetch a player on the server
@@ -157,7 +148,8 @@ module.exports = {
          return typeof object;
       }
    },
-   util: util
+   util: util,
+   wrappers: wrappers
    /*
    val: function (context, path, key, value) {
       var cc = context;
@@ -181,3 +173,8 @@ module.exports = {
    }
    */
 };
+
+global.___init___.push(function (jx) {
+   global._ = jx.wrappers._;
+   global.$ = jx.wrappers.$;
+});

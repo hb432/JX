@@ -1,2 +1,2 @@
-// import module
-module.exports = require('./jx/library/core');
+// import module & export
+module.exports = require('./library/core');
