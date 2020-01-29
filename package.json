@@ -1,6 +1,6 @@
 {
    "version": "1.0.0",
-   "main": "index.js",
+   "main": "./index",
    "name": "scriptcraft-jx",
    "description": "Streamline the development of complex features in minecraft."
 }
