@@ -50,7 +50,7 @@ module.exports = function (player, rows, title, items) {
 
 global.___init___.push(function (jx) {
    jx.data.store.server.interface = {};
-   jx.event.player.click(function (x, inventory, instance, event) {
+   jx.event.player.click(function (player, inventory, instance, event) {
       var data = jx.data.server('interface');
       var hash = inventory.hashCode().toString();
       if (data[hash]) {
@@ -64,7 +64,7 @@ global.___init___.push(function (jx) {
          }
       }
    });
-   jx.event.player.close(function (x, inventory) {
+   jx.event.player.close(function (player, inventory) {
       var data = jx.data.server('interface');
       var hash = inventory.hashCode().toString();
       if (data[hash]) {

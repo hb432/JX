@@ -36,7 +36,7 @@ module.exports = function (target, permission, value) {
 };
 
 global.___init___.push(function (jx) {
-   jx.event.player.join(function (player, instance) {
+   jx.event.player.join(function (player, instance, event) {
       var perm = player.data('perm');
       Object.keys(perm).forEach(function (key) {
          jx.perm(instance, key, perm[key]);
