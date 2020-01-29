@@ -1,5 +1,5 @@
 ### Pre-Requisites
-1. install the (ScriptCraft)[https://github.com/walterhiggins/ScriptCraft] plugin on your server
+1. install the [scriptcraft](https://github.com/walterhiggins/ScriptCraft) plugin on your server
 2. run the server once with the plugin installed to initialize it
 
 ### Installation (MagikCraft)
