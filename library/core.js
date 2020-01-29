@@ -2,7 +2,7 @@ var wrappers = require('./wrappers.js');
 var api = require('./api.js');
 var event = require('./event.js');
 var data = require('./data.js');
-var interface_ = require('./interface.js');
+var ui = require('./ui.js');
 var perm = require('./perm.js');
 var rand = require('./rand.js');
 var spawn = require('./spawn.js');
@@ -76,7 +76,6 @@ module.exports = {
       server.dispatchCommand(server.consoleSender, command.toString());
    },
    data: data,
-   interface: interface_,
    perm: perm,
    /**
     * fetch a player on the server
@@ -148,6 +147,7 @@ module.exports = {
          return typeof object;
       }
    },
+   ui: ui,
    util: util,
    wrappers: wrappers
    /*
