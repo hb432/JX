@@ -1,6 +1,6 @@
-var block = require('./wrappers/block');
-var entity = require('./wrappers/entity');
-var item = require('./wrappers/item');
+var block = require('./wrappers/block.js');
+var entity = require('./wrappers/entity.js');
+var item = require('./wrappers/item.js');
 module.exports = {
    /**
     * returns the jx-api-based object type string if applicable

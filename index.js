@@ -1,2 +1,2 @@
 // import module & export
-module.exports = require('./library/core');
+module.exports = require('./library/core.js');

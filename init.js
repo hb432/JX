@@ -15,7 +15,7 @@ global.___data___ = {
 };
 
 // import module
-var jx = require('./index');
+var jx = require('./index.js');
 
 // execute pushed init scripts
 global.___init___.array.forEach(function (script) {

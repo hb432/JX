@@ -1,13 +1,13 @@
-var wrappers = require('./wrappers');
-var api = require('./api');
-var event = require('./event');
-var data = require('./data');
-var interface_ = require('./interface');
-var perm = require('./perm');
-var rand = require('./rand');
-var spawn = require('./spawn');
-var storage = require('./storage');
-var util = require('./util');
+var wrappers = require('./wrappers.js');
+var api = require('./api.js');
+var event = require('./event.js');
+var data = require('./data.js');
+var interface_ = require('./interface.js');
+var perm = require('./perm.js');
+var rand = require('./rand.js');
+var spawn = require('./spawn.js');
+var storage = require('./storage.js');
+var util = require('./util.js');
 module.exports = {
    api: api,
    event: event,
@@ -81,7 +81,7 @@ module.exports = {
    /**
     * fetch a player on the server
     * @param {} player the target player
-    * @returns {{uuid:string,instance:object,online:boolean,name:string|null,data:function,offline:object}}
+    * @returns {{uuid:string,instance:object,online:boolean,name:string,data:function,offline:object}}
     * @example
     * // if a player is found, the output will be consistent no matter the method of discovery
     * // valid inputs for the "player" argument

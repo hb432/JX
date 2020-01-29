@@ -1,5 +1,5 @@
-var player = require('./event/player');
-var entity = require('./event/entity');
+var player = require('./event/player.js');
+var entity = require('./event/entity.js');
 
 module.exports = {
    store: [],

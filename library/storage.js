@@ -1,5 +1,5 @@
-var item = require('./storage/item');
-var inventory = require('./storage/inventory');
+var item = require('./storage/item.js');
+var inventory = require('./storage/inventory.js');
 
 module.exports = {
    item: item,
