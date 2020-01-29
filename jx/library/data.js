@@ -34,6 +34,6 @@ module.exports = {
    }
 };
 
-global.jxinit.push(function (jx) {
+global.___init___.push(function (jx) {
    jx.all(jx.data.player);
 });

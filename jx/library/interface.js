@@ -48,7 +48,7 @@ module.exports = function (player, rows, title, items) {
    player.openInventory(inv);
 };
 
-global.jxinit.push(function (jx) {
+global.___init___.push(function (jx) {
    jx.data.store.server.interface = {};
    jx.event.player.click(function (x, inventory, instance, event) {
       var data = jx.data.server('interface');

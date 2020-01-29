@@ -1,11 +1,11 @@
 // add init array
-global.jxinit = [];
+global.___init___ = [];
 
 // import module
 var jx = require('./jx/library/core');
 
 // execute init scripts
-global.jxinit.forEach(function (script) {
+global.___init___.forEach(function (script) {
    script(jx);
 });
 
