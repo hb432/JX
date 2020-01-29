@@ -64,7 +64,7 @@ global.___init___.push(function (jx) {
          }
       }
    });
-   jx.event.player.close(function (player, inventory) {
+   jx.event.player.close(function (player, inventory, instance, event) {
       var data = jx.data.server('interface');
       var hash = inventory.hashCode().toString();
       if (data[hash]) {
