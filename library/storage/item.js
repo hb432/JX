@@ -1,11 +1,11 @@
 module.exports = {
    /**
-    * converts an item stack to a json-serializable object
-    * @param {} stack
-    * @returns {object}
+    * convert an item stack into a json-serializable object
+    * @param {*} stack the item stack to convert
+    * @returns {*} the converted item stack
     * @example
-    * // convert player's currently held item
-    * var item = jx.storage.item.save(player.instance.itemInHand);
+    * // store a player's inventory in a variable
+    * var inventory = jx.storage.inventory.save(player);
     */
    save: function (stack) {
       var data = {};
@@ -50,11 +50,6 @@ module.exports = {
                upgraded: pot.upgraded
             };
             break;
-         /*
-         case 'jukebox':
-            data.unique = jx.storage.item.save(meta.blockState.record);
-            break;
-         */
          case 'writable_book':
          case 'written_book':
             data.unique = {
@@ -145,12 +140,14 @@ module.exports = {
       return data;
    },
    /**
-    * converts the output of jx.storage.item.save to an ItemStack
-    * @param {object} data
-    * @returns {}
+    * convert a json-serializable object into an item stack
+    * 
+    * designed to accept the output of jx.storage.item.save as input data
+    * @param {*} data the object to convert
+    * @returns {*} the converted object
     * @example
-    * // sets the currently held item of player to the item variable
-    * player.instance.setItemInHand(jx.storage.inventory.load(item));
+    * // store a converted object in a variable
+    * var item = jx.storage.item.load(data);
     */
    load: function (data) {
       var stack = jx.spawn.item(data.type, data.amount || 1);
@@ -183,15 +180,9 @@ module.exports = {
             case 'potion':
             case 'tipped_arrow':
                var pot = data.unique;
-               meta.setBasePotionData(new org.bukkit.potion.PotionData(pot.type, pot.extended, pot.upgraded));
+               var potionData = org.bukkit.potion.PotionData;
+               meta.setBasePotionData(new potionData(pot.type, pot.extended, pot.upgraded));
                break;
-            /*
-            case 'jukebox':
-               var state = meta.blockState;
-               state.setRecord(jx.storage.item.load(data.unique));
-               meta.setBlockState(state);
-               break;
-            */
             case 'writable_book':
             case 'written_book':
                meta.setPages(data.unique.pages);
@@ -202,7 +193,8 @@ module.exports = {
                   meta.setAuthor(data.unique.author);
                }
                if (data.unique.generation != null) {
-                  meta.setGeneration(org.bukkit.inventory.meta.BookMeta.Generation[data.unique.generation]);
+                  var generation = org.bukkit.inventory.meta.BookMeta.Generation;
+                  meta.setGeneration(generation[data.unique.generation]);
                }
                break;
             case 'filled_map':
@@ -214,7 +206,8 @@ module.exports = {
                   var effect = org.bukkit.FireworkEffect.builder();
                   effect.with(org.bukkit.FireworkEffect.Type[fx.type]);
                   fx.colors.forEach(function (color) {
-                     effect.withColor(org.bukkit.Color.fromRGB(color.red, color.green, color.blue));
+                     var color = org.bukkit.Color;
+                     effect.withColor(color.fromRGB(color.red, color.green, color.blue));
                   });
                   fx.fades.forEach(function (color) {
                      effect.withFade(org.bukkit.Color.fromRGB(color.red, color.green, color.blue));
@@ -253,7 +246,8 @@ module.exports = {
             Object.keys(data.unique).forEach(function (key) {
                var value = data.unique[key];
                var shape = value.shape ? org.bukkit.block.banner.PatternType[value.shape] : void 0;
-               meta.addPattern(new org.bukkit.block.banner.Pattern(org.bukkit.DyeColor[value.color], shape));
+               var pattern = org.bukkit.block.banner.Pattern;
+               meta.addPattern(new pattern(org.bukkit.DyeColor[value.color], shape));
             });
          }
       }

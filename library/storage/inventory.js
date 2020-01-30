@@ -1,11 +1,11 @@
 module.exports = {
    /**
-    * converts an inventory to a json-serializable object
-    * @param {} inventory
-    * @returns {object}
+    * store the contents of an inventory in a json-serializable object
+    * @param {*} inventory the inventory to store
+    * @returns {*} the stored inventory
     * @example
-    * // save a chest's inventory
-    * var inventory = jx.storage.inventory.save(chest.blockState.inventory);
+    * // store a player's inventory in a variable
+    * var inventory = jx.storage.inventory.save(player);
     */
    save: function (inventory) {
       var output = {};
@@ -17,13 +17,16 @@ module.exports = {
       return output;
    },
    /**
-    * converts the output of jx.storage.inventory.save to an Inventory
-    * @param {} holder
-    * @param {} data
-    * @returns {object}
+    * load the contents of a stored inventory into an inventory holder
+    * 
+    * designed to accept the output of jx.storage.inventory.save as input data
+    * @param {{
+    *    inventory: *
+    * }} holder the inventory holder to modify
+    * @param {*} data the stored inventory to load
     * @example
-    * // load a previously saved inventory into a chest block
-    * jx.storage.inventory.load(chest, inventory);
+    * // replace a player's inventory with a stored inventory
+    * jx.storage.inventory.load(player, inventory);
     */
    load: function (holder, data) {
       holder.inventory.clear();
@@ -32,14 +35,15 @@ module.exports = {
       });
    },
    /**
-    * displays a stored inventory for a specific player
-    * @param {} player
-    * @param {} data
-    * @param {string} title
-    * @returns {object}
+    * display the contents of a stored inventory for a player
+    * 
+    * designed to accept the output of jx.storage.inventory.save as input data
+    * @param {*} player the player to display the inventory to
+    * @param {*} data the stored inventory to display
+    * @param {*} [title] the inventory title
     * @example
-    * // display an inventory, perhaps a player vault
-    * jx.storage.inventory.open(player, inventory, 'Your Vault');
+    * // display a stored inventory for a player
+    * jx.storage.inventory.open(player, data, 'stored inventory');
     */
    open: function (player, data, title) {
       var instance = jx.player(player).instance;

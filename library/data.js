@@ -1,30 +1,39 @@
 module.exports = {
-   store: global.___data___,
+   store: {
+      server: persist('jx-server'),
+      player: {}
+   },
    /**
-    * access persistent server data
-    * @param {...string} [path] the data path
-    * @returns {object}
+    * access and edit server data
+    * 
+    * each argument is a node in the data path
+    * 
+    * modifications to the returned object will persist across reloads.
+    * @returns {*} the fetched data
     * @example
-    * // set context to jx.data.store.server
-    * // for each key in path, set context to context[key]
-    * // if context[key] is not defined, define it as {}
-    * // once all keys are iterated through, return context
-    * var claims = jx.data.server('territory', 'claims');
+    * // now, store current state value
+    * jx.data.server('hello', 'world').state = true;
+    * 
+    * // later, perhaps post-reload, display stored state value
+    * console.log(jx.data.server('hello', 'world').state);
     */
    server: function () {
       return jx.util.traverse(jx.data.store.server, arguments);
    },
    /**
-    * access persistent player data
-    * @param {} player the target player
-    * @param {...string} [path] the data path
-    * @returns {object}
+    * fetch data specific to player
+    * 
+    * each argument after player is a node in the data path
+    * 
+    * modifications to the returned object will persist across reloads.
+    * @param {*} player the player whose data should be fetched
+    * @returns {*} the fetched data
     * @example
-    * // set context to jx.data.store.player[jx.player(player).uuid]
-    * // for each key in path, set context to context[key]
-    * // if context[key] is not defined, define it as {}
-    * // once all keys are iterated through, return context
-    * var nick = jx.data.player('chat', 'nick');
+    * // now, store current health value
+    * jx.data.player(player, 'health').value = player.instance.health;
+    * 
+    * // later, perhaps post-reload, display stored health value
+    * console.log(jx.data.player(player, 'health').value);
     */
    player: function (player) {
       var store = jx.data.store.player;
@@ -33,7 +42,3 @@ module.exports = {
       return jx.util.traverse(data, jx.ar(arguments).slice(1));
    }
 };
-
-global.___init___.push(function (jx) {
-   jx.all(jx.data.player);
-});

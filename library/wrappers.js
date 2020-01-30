@@ -1,21 +1,13 @@
-var block = require('./wrappers/block.js');
 var entity = require('./wrappers/entity.js');
 var item = require('./wrappers/item.js');
 module.exports = {
    /**
-    * returns the jx-api-based object type string if applicable
-    * @param {} object the input object to check
+    * returns the object type string if applicable (entities, blocks, and items)
+    * @param {*} object the input object to check
     * @returns {string} returns null if not applicable
     * @example
-    * // entity type
-    * var type = _(entity);
-    * 
-    * // switch based on block type
-    * switch (_(block)) {
-    *    case 'stone':
-    *       console.log("he's stoned...");
-    *       break;
-    * }
+    * // return entity type
+    * _(entity);
     */
    _: function (object) {
       var type = jx.ty(object);
@@ -30,28 +22,15 @@ module.exports = {
    /**
     * if input is a string, resolve string as an incomplete player name to player object
     * 
-    * name is resolved with, first exact match check, then all online players, then all players with server data
+    * name is resolved with exact match check, then online players check, then players with server data check
     * 
-    * if input is an entity, block, or item stack, wrap object in respective wrapper
+    * if input is an entity or item stack, wrap object in respective wrapper
     * 
-    * if object has no associated wrapper, return false
-    * @param {} object
-    * @returns {} null if no player found or no wrapper applied
+    * if name cannot be resolved or object has no associated wrapper, return null
+    * @param {*} object
+    * @returns {*}
     * @example
-    * // modify an item
-    * $(item).mod({
-    *    enchantments: {
-    *       looting: 3,
-    *       sharpness: 4,
-    *       fire_aspect: 2
-    *    },
-    *    meta: {
-    *       unbreakable: true,
-    *       displayName: jx.color('&4&l&oThe Power Sword')
-    *    }
-    * });
-    * 
-    * // resolve full player name (resolves if player harrix432 is online)
+    * // resolve full player name (resolves this way if player 'harrix432' is online)
     * console.log($('h').name); // harrix432
     */
    $: function (object) {
@@ -76,15 +55,13 @@ module.exports = {
                }
             });
          }
-         if (arg2) {
-            var players = jx.data.server('players');
-            Object.keys(players).forEach(function (player) {
-               var value = players[player];
-               if (!match && value.toLowerCase().startsWith(object.toLowerCase())) {
-                  match = value;
-               }
-            });
-         }
+         var players = jx.data.server('players');
+         Object.keys(players).forEach(function (player) {
+            var value = players[player];
+            if (!match && value.toLowerCase().startsWith(object.toLowerCase())) {
+               match = value;
+            }
+         });
          if (match) {
             return jx.player(match);
          } else {
@@ -94,7 +71,6 @@ module.exports = {
          return null;
       }
    },
-   block: block,
    entity: entity,
    item: item
 };
