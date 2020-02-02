@@ -98,6 +98,9 @@ module.exports = function () {
          jx.perm(instance, key, perm[key]);
       });
    });
+   Object.keys(jx.util).forEach(function (key) {
+      jx['_' + key] = jx.util[key];
+   });
    global._ = jx.wrappers._;
    global.$ = jx.wrappers.$;
 };
