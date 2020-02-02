@@ -30,7 +30,7 @@ module.exports = {
     */
    /**
     * execute a script when an entity regains health
-    * @param {jx_event_entity_damage} listener the script to execute
+    * @param {jx_event_entity_heal} listener the script to execute
     * @example
     * // cap player healing to 10 health (5 hearts)
     * jx.event.entity.heal(function (entity, amount, event) {
