@@ -106,6 +106,7 @@ module.exports = {
     * @returns {*} the object
     */
    json: function (loc) {
+      loc = loc || (self && self.location) || server.worlds.get(0).spawnLocation;
       if (!loc.world.name) {
          return loc;
       }
@@ -119,6 +120,7 @@ module.exports = {
     * @returns {*} the server location
     */
    loc: function (json) {
+      json = json || (self && self.location) || server.worlds.get(0).spawnLocation;
       if (json.world.name) {
          return json;
       }
