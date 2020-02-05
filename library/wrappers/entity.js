@@ -133,7 +133,7 @@ module.exports = function (subject) {
             var effect = entity.getPotionEffect(entry);
             if (effect) {
                output[jx.api.potionEffectType[effect.type.name.toString()]] = {
-                  time: Number(effect.duration),
+                  time: Number(effect.duration / 20),
                   level: Number(effect.amplifier)
                };
             }
