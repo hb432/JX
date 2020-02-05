@@ -243,7 +243,7 @@ module.exports = {
     */
    text: function (player, message, mode, color) {
       player = jx.player(player).instance;
-      mode = mode || 'color';
+      mode = mode || 'text';
       color = color || true;
       if (color) message = jx.color(message);
       switch (mode) {
