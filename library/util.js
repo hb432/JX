@@ -110,7 +110,14 @@ module.exports = {
       if (!loc.world.name) {
          return loc;
       }
-      return { world: loc.world.name, x: loc.x, y: loc.y, z: loc.z, yaw: loc.yaw, pitch: loc.pitch };
+      return {
+         world: loc.world.name,
+         x: loc.x,
+         y: loc.y,
+         z: loc.z,
+         yaw: loc.yaw,
+         pitch: loc.pitch
+      };
    },
    /**
     * converts an object into a server location
