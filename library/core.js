@@ -11,7 +11,7 @@ module.exports = {
     * });
     */
    all: function (script, exception) {
-      return server.onlinePlayers.map(function (player) {
+      return jx.ar(server.onlinePlayers).map(function (player) {
          if (exception && jx.player(exception).uuid === jx.player(player).uuid) {
             return false;
          }
