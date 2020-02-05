@@ -1,12 +1,22 @@
 module.exports = {
    /**
     * checks if an object has a specific entry, if not, sets it to a default value, then returns the entry
+    * 
+    * alternatively, key arg can be an object with keys and placeholder values
     * @param {*} object the object to check
-    * @param {string} key the key to set and/or return
+    * @param {*} key the key to set and/or return
     * @param {*} placeholder the value to set if the existing value is undefined
+    * @returns if key arg is string, return value of setted property, else return context object
     */
    auto: function (object, key, placeholder) {
-      return object[key] !== void 0 ? object[key] : (object[key] = placeholder);
+      if (jx.ty(key) === 'string') {
+         return object[key] !== void 0 ? object[key] : (object[key] = placeholder);
+      } else {
+         Object.keys(key).forEach(function (entry) {
+            jx.util.auto(object, entry, key[entry]);
+         });
+         return object;
+      }
    },
    /**
     * converts a space-seperated string to camel case
