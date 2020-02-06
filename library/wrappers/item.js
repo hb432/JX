@@ -16,6 +16,7 @@
  *    meta: jx_wrappers_item$meta,
  *    amount: jx_wrappers_item$amount,
  *    flag: jx_wrappers_item$flag,
+ *    data: jx_wrappers_item$data,
  *    mod: jx_wrappers_item$mod
  * }} jx_wrappers_item$return
  */
@@ -42,12 +43,18 @@
  */
 /**
  * @callback jx_wrappers_item$amount
- * @param {number} amount the value to set the amount to, omit to return current amount
+ * @param {number} [amount] the value to set the amount to, omit to return current amount
  * @returns {*}
  */
 /**
  * @callback jx_wrappers_item$flag
  * @param {'enchants'|'attributes'|'unbreakable'|'destroys'|'placed_on'|'potion_effects'} flag the item flag to apply, omit to return all applied item flags
+ * @returns {*}
+ */
+/**
+ * @callback jx_wrappers_item$data
+ * @param {string} [property] the property to assign to, omit to return all properties and values
+ * @param {*} [value] the value to assign, omit to return value of given property
  * @returns {*}
  */
 /**
@@ -106,9 +113,9 @@ module.exports = function (subject) {
          type = type.toString();
          if (value != null) {
             var uuid = java.util.UUID.randomUUID();
-            var operation = jx.api.operation[(operation || 'add_number').toString()];
+            var op = jx.api.operation[(operation || 'add_number').toString()];
             var slot = slot ? jx.api.equipmentSlot[slot.toString()] : null;
-            var modifier = new org.bukkit.attribute.AttributeModifier(uuid, type, Number(value), operation, slot);
+            var modifier = new org.bukkit.attribute.AttributeModifier(uuid, type, value, op, slot);
             meta.addAttributeModifier(jx.api.attribute[type], modifier);
             item.setItemMeta(meta);
             return that;
@@ -165,6 +172,25 @@ module.exports = function (subject) {
          });
       }
    };
+   that.data = function (key, value) {
+      var meta = item.itemMeta;
+      var type = org.bukkit.persistence.PersistentDataType.STRING;
+      var container = meta.persistentDataContainer;
+      var raw = {};
+      jx.ar(container.raw.entrySet()).forEach(function (entry) {
+         raw[entry.key] = entry.value;
+      });
+      if (key) {
+         if (value) {
+            container.set(new org.bukkit.NamespacedKey('jx', key), type, value + '');
+            return that;
+         } else {
+            return raw[key];
+         }
+      } else {
+         return raw;
+      }
+   };
    that.mod = function (options) {
       if (options.amount) {
          that.setAmount(options.amount);
@@ -187,6 +213,11 @@ module.exports = function (subject) {
       if (options.attributes) {
          options.attributes.forEach(function (attribute) {
             that.attribute(attribute.name, attribute.value, attribute.operation, attribute.slot);
+         });
+      }
+      if (options.data) {
+         Object.keys(options.data).forEach(function (key) {
+            that.data(key, options.data[key]);
          });
       }
       return that;

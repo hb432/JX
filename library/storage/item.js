@@ -16,6 +16,7 @@ module.exports = {
       data.ench = $(stack).enchantment();
       data.attr = $(stack).attribute();
       data.flag = $(stack).flag();
+      data.data = $(stack).data();
       if (data.amount === 1) {
          data.amount = void 0;
       }
@@ -33,6 +34,9 @@ module.exports = {
       }
       if (meta.lore) {
          data.lore = jx.ar(meta.lore);
+      }
+      if (!Object.keys(data.data).length) {
+         data.data = void 0;
       }
       switch (_(stack)) {
          case 'enchanted_book':
@@ -156,6 +160,9 @@ module.exports = {
       }
       Object.keys(data.ench || {}).forEach(function (name) {
          $(stack).enchantment(name, data.ench[name]);
+      });
+      Object.keys(data.data || {}).forEach(function (key) {
+         $(stack).data(key, data.data[key]);
       });
       (data.attr || []).forEach(function (modifier) {
          $(stack).attribute(modifier.name, modifier.amount, modifier.operation, modifier.slot);
