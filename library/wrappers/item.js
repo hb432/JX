@@ -178,11 +178,12 @@ module.exports = function (subject) {
       var container = meta.persistentDataContainer;
       var raw = {};
       jx.ar(container.raw.entrySet()).forEach(function (entry) {
-         raw[entry.key] = entry.value;
+         if (entry.key.startsWith('jx:')) raw[entry.key.slice(3)] = (entry.value + '').slice(1, -1);
       });
       if (key) {
          if (value) {
             container.set(new org.bukkit.NamespacedKey('jx', key), type, value + '');
+            item.setItemMeta(meta);
             return that;
          } else {
             return raw[key];
