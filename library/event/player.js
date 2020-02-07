@@ -118,7 +118,7 @@ module.exports = {
       jx.event.on('prepareItemCraft', function (event) {
          if (event.recipe && event.recipe.key) {
             var e = event;
-            var p = jx.player(e.whoClicked);
+            var p = jx.player(e.view.player);
             listener(p, e.recipe.key.toString(), e.inventory.result, e.inventory, e);
          }
       });

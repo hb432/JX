@@ -64,13 +64,15 @@ module.exports = function () {
             switch (key) {
                case 'attribute':
                   var vanilla2 = value.name().toLowerCase().split('_');
-                  jx.api[key][vanilla2[0] + '.' + jx.util.camel(vanilla2.slice(1).join(' '))] = value;
+                  jx.api[key][
+                     vanilla2[0] + '.' + jx.util.camel(vanilla2.slice(1).join(' '))
+                  ] = value;
                   break;
             }
          }
       });
    });
-   jx.event.player.click(function (x, inventory, instance, event) {
+   jx.event.player.click(function (x, inventory, instance, y, z, event) {
       var data = jx.data.server('interface');
       var hash = inventory.hashCode().toString();
       if (data[hash]) {
@@ -95,7 +97,7 @@ module.exports = function () {
       jx.data.server('players')[player.uuid] = instance.name;
       var perm = player.data('permission');
       Object.keys(perm).forEach(function (key) {
-         jx.perm(instance, key, perm[key]);
+         jx.permission(instance, key, perm[key]);
       });
    });
    Object.keys(jx.util).forEach(function (key) {

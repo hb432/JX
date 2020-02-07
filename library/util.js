@@ -145,6 +145,32 @@ module.exports = {
       return new org.bukkit.Location(world, json.x, json.y, json.z, json.yaw || 0, json.pitch || 0);
    },
    /**
+    * generates formatted lore from text
+    * @param {string[]} text the raw text data
+    * @param {*} [prefix] optional prefix for each line
+    * @param {*} [newline] prefix for input text array elements
+    * @returns {string[]} the generated lore
+    */
+   lore: function (text, prefix, newline) {
+      var segments = text.join(' \n').split(' ');
+      var lore = [ jx.color((newline || '') + segments[0]) ];
+      segments = segments.slice(1);
+      var index = 0;
+      segments.forEach(function (substr) {
+         var colors = jx.color(substr).split(jx.color('&')).length - 1;
+         if (substr.startsWith('\n') || lore[index].length + substr.length - colors * 2 > 32) {
+            lore[++index] = jx.color(substr.replace('\n', newline || ''));
+         } else {
+            lore[index] = lore[index] + ' ' + substr;
+         }
+      });
+      return prefix
+         ? lore.map(function (text) {
+              return jx.color(prefix + text);
+           })
+         : lore;
+   },
+   /**
     * converts a space-seperated string to pascal case
     * @param {string} text the string to convert
     * @returns {string} the converted text

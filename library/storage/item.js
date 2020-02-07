@@ -4,8 +4,8 @@ module.exports = {
     * @param {*} stack the item stack to convert
     * @returns {*} the converted item stack
     * @example
-    * // store a player's inventory in a variable
-    * var inventory = jx.storage.inventory.save(player);
+    * // store the item in player's hand in a variable
+    * var item = jx.storage.item.save(player.instance.itemInHand);
     */
    save: function (stack) {
       var data = {};

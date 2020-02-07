@@ -95,7 +95,7 @@ module.exports = {
       data[uuid] = {};
       Object.keys(items).forEach(function (slot) {
          var item = items[slot];
-         inv.setItem(slot, item.stack);
+         inv.setItem(slot, $(item.stack).flag('attributes').item);
          data[uuid][slot] = { command: item.command, event: item.event };
       });
       player.openInventory(inv);
