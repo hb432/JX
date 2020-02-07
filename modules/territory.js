@@ -1,5 +1,5 @@
 // import module
-var jx = require('./../index');
+var jx = require('./../index.js');
 
 // get claim key of chunk
 var key = function (query) {
@@ -19,20 +19,22 @@ var state = function (location) {
  * functions for claiming chunks and trusting players
  * @param {} player the target player
  * @returns {{
- *    claim: function,
- *    unclaim: function,
- *    claims: function,
- *    claimed: function,
- *    trust: function,
- *    untrust: function,
- *    trusts: function,
- *    trusted: function
+ *    claim: territory$claim,
+ *    unclaim: territory$unclaim,
+ *    claims: territory$claims,
+ *    claimed: territory$claimed,
+ *    trust: territory$trust,
+ *    untrust: territory$untrust,
+ *    trusts: territory$trusts,
+ *    trusted: territory$trusted,
+ *    access: territory$access,
  * }}
  */
 module.exports = function (player) {
    player = jx.player(player);
    return {
       /**
+       * @callback territory$claim
        * claims chunk at provided location with player
        * @param {} [location] location to claim - defaults to player location
        * @returns {true}
@@ -44,6 +46,7 @@ module.exports = function (player) {
          return true;
       },
       /**
+       * @callback territory$unclaim
        * unclaims chunk at provided location
        * @param {} [location] location to unclaim - defaults to player location
        * @returns {true}
@@ -59,6 +62,7 @@ module.exports = function (player) {
          return true;
       },
       /**
+       * @callback territory$claims
        * fetches all claimed chunks of player
        * @returns {string[]}
        */
@@ -68,12 +72,15 @@ module.exports = function (player) {
          Object.keys(claims).forEach(function (chunk) {
             if (claims[chunk] === true) {
                location = chunk.split(':');
-               output.push(server.getWorld(location[0]).getChunkAt(Number(location[1]), Number(location[2])));
+               output.push(
+                  server.getWorld(location[0]).getChunkAt(Number(location[1]), Number(location[2]))
+               );
             }
          });
          return output;
       },
       /**
+       * @callback territory$claimed
        * fetches claim state of provided location in relation to player
        * @param {} [location] location to check - defaults to player location
        * @returns {'claimed-by-self'|'unclaimed'|'claimed-by-other'}
@@ -84,14 +91,18 @@ module.exports = function (player) {
          switch (state(location)) {
             case player.uuid:
                response = 'claimed-by-self';
+               break;
             case void 0:
                response = 'unclaimed';
+               break;
             default:
                response = 'claimed-by-other';
+               break;
          }
          return response;
       },
       /**
+       * @callback territory$trust
        * adds a trustee to trust list of player
        * @param {} trustee player to trust
        * @returns {true}
@@ -102,6 +113,7 @@ module.exports = function (player) {
          return true;
       },
       /**
+       * @callback territory$untrust
        * removes a trustee from trust list of player
        * @param {} trustee player to untrust
        * @returns {true}
@@ -112,8 +124,9 @@ module.exports = function (player) {
          return true;
       },
       /**
+       * @callback territory$trusts
        * fetches all members of trust list of player
-       * @returns {string[]}
+       * @returns {array}
        */
       trusts: function () {
          var trusts = player.data('territory', 'trusts');
@@ -124,6 +137,7 @@ module.exports = function (player) {
          return output;
       },
       /**
+       * @callback territory$trusted
        * fetches trust state of trustee in relation to player
        * @param {} trustee player to check
        * @returns {boolean} true if trusted, false if untrusted
@@ -131,6 +145,18 @@ module.exports = function (player) {
       trusted: function (trustee) {
          trustee = jx.player(trustee);
          return player.data('territory', 'trusts')[trustee.uuid] === true;
+      },
+      /**
+       * @callback territory$access
+       * checks if a player has access, true if chunk is claimed by self, claimed by other and
+       * trusted, or unclaimed
+       * @param {} [location] location to check - defaults to player location
+       */
+      access: function (location) {
+         location = location || player;
+         var claimant = state(location);
+         if (!claimant || claimant === player.uuid) return true;
+         else return jx.data.player(claimant, 'territory', 'trusts')[player.uuid] === true;
       }
    };
 };

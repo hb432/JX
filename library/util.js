@@ -164,11 +164,7 @@ module.exports = {
             lore[index] = lore[index] + ' ' + substr;
          }
       });
-      return prefix
-         ? lore.map(function (text) {
-              return jx.color(prefix + text);
-           })
-         : lore;
+      return prefix ? jx.util.pf(lore, prefix).map(jx.color) : lore;
    },
    /**
     * converts a space-seperated string to pascal case
@@ -182,6 +178,17 @@ module.exports = {
       return array.join('');
    },
    /**
+    * prepends each element in the array with text
+    * @param {string[]} text the strings to prepend
+    * @param {string[]} prefix the text to apply
+    * @returns {string} the array of prepended strings
+    */
+   pf: function (text, prefix) {
+      return text.map(function (segment) {
+         return prefix + segment;
+      });
+   },
+   /**
     * returns the roman numeral for integers 1-10
     * @param {number} integer the number to convert
     * @returns {string} the corresponging roman numeral
@@ -193,6 +200,17 @@ module.exports = {
       } else {
          return [ null, 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X' ][integer];
       }
+   },
+   /**
+    * appends each element in the array with text
+    * @param {string[]} text the strings to append
+    * @param {string[]} suffix the text to apply
+    * @returns {string} the array of appended strings
+    */
+   sf: function (text, suffix) {
+      return text.map(function (segment) {
+         return segment + suffix;
+      });
    },
    /**
     * this is better explained by looking at the source code...
