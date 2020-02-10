@@ -38,6 +38,9 @@ module.exports = {
       if (!Object.keys(data.data).length) {
          data.data = void 0;
       }
+      if (meta.damage) {
+         data.damage = meta.damage;
+      }
       switch (_(stack)) {
          case 'enchanted_book':
             data.unique = {};
@@ -176,6 +179,9 @@ module.exports = {
       }
       if (data.lore) {
          meta.setLore(data.lore);
+      }
+      if (data.damage) {
+         meta.setDamage(data.damage);
       }
       if (data.unique) {
          switch (data.type) {

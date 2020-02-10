@@ -225,5 +225,15 @@ module.exports = {
          context = jx.util.auto(context, node, {});
       });
       return context;
+   },
+   /**
+    * creates a vector with X, Y, and Z as a set of 3 doubles or 3 integers
+    * @param {number} x x direction
+    * @param {number} y y direction
+    * @param {number} z z direction
+    * @returns {*} the vector
+    */
+   vector: function (x, y, z) {
+      return eval('new org.bukkit.util.Vector(' + (x || 0) + ',' + (y || 0) + ',' + (z || 0) + ')');
    }
 };

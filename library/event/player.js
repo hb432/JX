@@ -101,6 +101,7 @@ module.exports = {
     * @param {string} [recipe] the recipe formed
     * @param {*} [result] the item to be crafted
     * @param {*} [inventory] the relevant crafting inventory
+    * @param {*} [instance] the relevant player's instance
     * @param {*} [event] the event data
     */
    /**
@@ -116,11 +117,10 @@ module.exports = {
     */
    craft: function (listener) {
       jx.event.on('prepareItemCraft', function (event) {
-         if (event.recipe && event.recipe.key) {
-            var e = event;
-            var p = jx.player(e.view.player);
-            listener(p, e.recipe.key.toString(), e.inventory.result, e.inventory, e);
-         }
+         var e = event;
+         var p = jx.player(e.view.player);
+         var r = e.recipe ? (e.recipe.key ? e.recipe.key.toString() : null) : null;
+         listener(p, r, e.inventory.result, e.inventory, p.instance, e);
       });
    },
    /**
