@@ -1,3 +1,4 @@
+var block = require('./wrappers/block.js');
 var entity = require('./wrappers/entity.js');
 var item = require('./wrappers/item.js');
 module.exports = {
@@ -45,10 +46,8 @@ module.exports = {
       var type = jx.ty(object);
       if (type.contains('.entity.')) {
          return jx.wrappers.entity(object);
-         /*
       } else if (type.contains('.block.')) {
          return jx.wrappers.block(object);
-      */
       } else if (type.contains('ItemStack')) {
          return jx.wrappers.item(object);
       } else if (type === 'string') {
@@ -113,6 +112,7 @@ module.exports = {
          return null;
       }
    },
+   block: block,
    entity: entity,
    item: item
 };

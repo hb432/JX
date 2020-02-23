@@ -1,4 +1,1 @@
-out
-.vscode
-node_modules
-package-lock.json
+test

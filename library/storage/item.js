@@ -60,7 +60,9 @@ module.exports = {
          case 'writable_book':
          case 'written_book':
             data.unique = {
-               pages: jx.ar(meta.pages),
+               pages: jx.ar(meta.spigot().pages).map(function (page) {
+                  return jx.ar(page).map(jx.util.textComponent.to);
+               }),
                title: meta.title,
                author: meta.author,
                generation: meta.generation
@@ -198,7 +200,14 @@ module.exports = {
                break;
             case 'writable_book':
             case 'written_book':
-               meta.setPages(data.unique.pages);
+               meta.pages = new Array(data.unique.pages.length).join('.').split('.');
+               data.unique.pages.forEach(function (page, index) {
+                  var internal = meta.spigot().pages[index];
+                  page.forEach(function (component, index) {
+                     internal[index] = jx.util.textComponent.from(component);
+                  });
+                  meta.spigot().setPage(index + 1, internal);
+               });
                if (data.unique.title != null) {
                   meta.setTitle(data.unique.title);
                }

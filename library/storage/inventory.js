@@ -29,7 +29,7 @@ module.exports = {
     * jx.storage.inventory.load(player, inventory);
     */
    load: function (holder, data) {
-      holder.inventory.clear();
+      if (holder.inventory.clear) holder.inventory.clear();
       Object.keys(data).forEach(function (key) {
          holder.inventory.setItem(key, jx.storage.item.load(data[key]));
       });

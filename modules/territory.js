@@ -160,3 +160,6 @@ module.exports = function (player) {
       }
    };
 };
+
+module.exports.key = key;
+module.exports.state = state;
