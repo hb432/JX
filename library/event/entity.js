@@ -1,3 +1,4 @@
+// todo: add listeners for entity death, entity move, entity teleport
 module.exports = {
    /**
     * @callback jx_event_entity_damage
@@ -40,6 +41,27 @@ module.exports = {
    heal: function (listener) {
       jx.event.on('entityRegainHealth', function (event) {
          listener(event.entity, Number(event.amount), event);
+      });
+   },
+   /**
+    * @callback jx_event_entity_shoot
+    * @param {*} [entity] the entity that fired the shot
+    * @param {*} [event] the event data
+    */
+   /**
+    * execute a script when an entity shoots a bow
+    * @param {jx_event_entity_shoot} listener the script to execute
+    * @example
+    * // spawn a diamond when a player shoots a bow
+    * jx.event.entity.shoot(function (entity, event) {
+    *    if (_(entity) === 'player') {
+    *       entity.world.dropItemNaturally(entity.location, jx.spawn.item('diamond'));
+    *    }
+    * });
+    */
+   shoot: function (listener) {
+      jx.event.on('entityShootBow', function (event) {
+         listener(event.entity, event);
       });
    },
    /**

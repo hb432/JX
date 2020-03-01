@@ -200,14 +200,14 @@ module.exports = {
                break;
             case 'writable_book':
             case 'written_book':
-               meta.pages = new Array(data.unique.pages.length).join('.').split('.');
-               data.unique.pages.forEach(function (page, index) {
-                  var internal = meta.spigot().pages[index];
-                  page.forEach(function (component, index) {
-                     internal[index] = jx.util.textComponent.from(component);
+               if (data.unique.pages.length) {
+                  meta.pages = (new Array(data.unique.pages.length).join('x.') + 'x').split('.');
+                  data.unique.pages.forEach(function (page, index) {
+                     var internal = meta.spigot().pages[index];
+                     internal[0] = jx.util.textComponent.from({ text: '', extra: page });
+                     meta.spigot().setPage(index + 1, internal);
                   });
-                  meta.spigot().setPage(index + 1, internal);
-               });
+               }
                if (data.unique.title != null) {
                   meta.setTitle(data.unique.title);
                }

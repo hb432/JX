@@ -1,5 +1,6 @@
 var player = require('./event/player.js');
 var entity = require('./event/entity.js');
+var server = require('./event/server.js');
 
 module.exports = {
    store: [],
@@ -41,5 +42,6 @@ module.exports = {
       });
    },
    player: player,
-   entity: entity
+   entity: entity,
+   server: server
 };

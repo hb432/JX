@@ -30,7 +30,7 @@ module.exports = {
    /**
     * this is better explained by looking at the source code...
     * 
-    * checks each superclass of the input class for a matching string
+    * checks if any class in the interface chain of the input class contains a string
     * @param {*} subject the class to check
     * @param {string} filter the filter string
     * @returns {boolean} true if match was found, false if no match was found
@@ -164,7 +164,44 @@ module.exports = {
             lore[index] = lore[index] + ' ' + substr;
          }
       });
-      return prefix ? jx.util.pf(lore, prefix).map(jx.color) : lore;
+      return prefix ? jx.util.pf(lore, prefix).map(jx.color) : lore.map(jx.color);
+   },
+   /**
+    * recursively check an object against a filter as specified below
+    * 
+    * if filter is array, recursively find at least 1 matching item in array
+    * 
+    * if filter is object, recursively check object values against existing filter values
+    * 
+    * if filter is null or undefined, ignore filter
+    * 
+    * if filter is primitive or non-array and non-object, check object against filter
+    * 
+    * @param {string} object the object to check
+    * @param {*} [filter] the filter to check with
+    * @returns {boolean} true if object passed through the filter, false if not
+    */
+   match: function (object, filter) {
+      var same = true;
+      switch (jx.ty(filter)) {
+         case 'Array':
+            var check = filter.map(function (item) {
+               return jx.util.match(object, item);
+            });
+            if (check.indexOf(true) === -1) same = false;
+            break;
+         case 'Object':
+            Object.keys(filter).forEach(function (key) {
+               if (!jx.util.match(object[key], filter[key])) same = false;
+            });
+            break;
+         case 'null':
+         case 'undefined':
+            break;
+         default:
+            if (object !== filter) same = false;
+      }
+      return same;
    },
    /**
     * converts a space-seperated string to pascal case

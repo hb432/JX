@@ -84,6 +84,9 @@ module.exports = function () {
          if (item.command) {
             instance.chat(item.command);
          }
+         if (item.trigger) {
+            eval(item.trigger)(instance);
+         }
       }
    });
    jx.event.player.close(function (x, inventory) {

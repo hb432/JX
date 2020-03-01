@@ -85,6 +85,30 @@ module.exports = {
     * @param {string} title the inventory title
     * @param {*} items the items in the interface
     * @example
+    * // make an interface, 3 rows with stone blocks filling the 2nd and 7th columns of each row
+    * // show the infinity enchantment on the stone in row 1 column 2
+    * // make the stone in row 3 column 7 have the player run /say wow
+    * jx.interface(player, 3, 'Stone Columns', {
+    *    12: {
+    *       type: $('!!!stone')
+    *    },
+    *    22: {
+    *       type: 'stone'
+    *    },
+    *    32: {
+    *       type: 'stone'
+    *    },
+    *    17: {
+    *       type: 'stone'
+    *    },
+    *    27: {
+    *       type: 'stone'
+    *    },
+    *    37: {
+    *       type: 'stone',
+    *       command: '/say wow'
+    *    }
+    * })
     */
    interface: function (player, rows, title, items) {
       player = jx.player(player).instance;
@@ -93,10 +117,20 @@ module.exports = {
       var data = jx.data.server('interface');
       var uuid = inv.hashCode().toString();
       data[uuid] = {};
-      Object.keys(items).forEach(function (slot) {
-         var item = items[slot];
-         inv.setItem(slot, $(item.stack).flag('attributes').item);
-         data[uuid][slot] = { command: item.command, event: item.event };
+      Object.keys(items).forEach(function (key) {
+         var slot = key + '';
+         slot = (Number(key[0]) - 1) * 9 + (Number(key[1]) - 1);
+         var item = items[key].item;
+         if (jx.ty(item) === 'string') item = jx.spawn.item(item);
+         else if (jx.ty(item) === 'Array') item = jx.spawn.item.apply(0, item);
+         if (items[key].title) item = $(item).meta('displayName', jx.color(items[key].title)).item;
+         if (items[key].description) item = $(item).meta('lore', items[key].description).item;
+         inv.setItem(slot, $(item.item || item).flag('attributes').item);
+         data[uuid][slot] = {
+            command: items[key].command,
+            event: items[key].event,
+            trigger: items[key].trigger ? items[key].trigger + '' : void 0
+         };
       });
       player.openInventory(inv);
    },

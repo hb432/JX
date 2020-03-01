@@ -86,6 +86,9 @@ module.exports = function (subject) {
    var that = {
       get item () {
          return item;
+      },
+      get instance () {
+         return item;
       }
    };
    that.type = _(item);

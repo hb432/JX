@@ -1,3 +1,4 @@
+// todo: add listeners for player death, player respawn
 module.exports = {
    /**
     * @callback jx_event_player_break

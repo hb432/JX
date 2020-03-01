@@ -109,6 +109,9 @@ module.exports = function (subject) {
    var that = {
       get entity () {
          return entity;
+      },
+      get instance () {
+         return entity;
       }
    };
    that.type = _(entity);
