@@ -94,6 +94,20 @@ module.exports = {
                };
             }
             break;
+         case 'spawner':
+            // todo: add support for spawnData
+            var state = meta.blockState;
+            data.unique = {
+               type: state.spawnedType.name().toLowerCase(),
+               first: state.delay,
+               nearby: state.maxNearbyEntities,
+               max_next: state.maxSpawnDelay,
+               min_next: state.minSpawnDelay,
+               active_dist: state.requiredPlayerRange,
+               count: state.spawnCount,
+               range: state.spawnRange
+            };
+            break;
          case 'firework_rocket':
             data.unique = {
                power: meta.power,
@@ -221,6 +235,19 @@ module.exports = {
                break;
             case 'filled_map':
                meta.setMapId(data.unique);
+               break;
+            case 'spawner':
+               // todo: add support for spawnData
+               var state = meta.blockState;
+               state.spawnedType = jx.api.entityType[data.unique.type];
+               state.delay = data.unique.first;
+               state.maxNearbyEntities = data.unique.nearby;
+               state.maxSpawnDelay = data.unique.max_next;
+               state.minSpawnDelay = data.unique.min_next;
+               state.requiredPlayerRange = data.unique.active_dist;
+               state.spawnCount = data.unique.count;
+               state.spawnRange = data.unique.range;
+               meta.blockState = state;
                break;
             case 'firework_rocket':
                meta.setPower(data.unique.power);

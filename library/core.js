@@ -77,6 +77,7 @@ module.exports = {
    },
    data: require('./data.js'),
    event: require('./event.js'),
+   group: require('./group.js'),
    init: require('./init.js'),
    /**
     * display an inventory interface for player
@@ -139,11 +140,12 @@ module.exports = {
     * @param {*} target the player to modify a permission of
     * @param {string} permission the permission to modify
     * @param {boolean} value the permission value, omit to remove explicit value
+    * @param {boolean} persist if true, persist across refresh, reloads, and restarts
     * @example
     * // grant "worldedit.*" to a player
     * jx.permission(player, 'worldedit.*', true);
     */
-   permission: function (target, permission, value) {
+   permission: function (target, permission, value, persist) {
       var player = jx.player(target).instance;
       switch (value) {
          case null:
@@ -160,7 +162,9 @@ module.exports = {
             player.addAttachment(plugin, permission, value);
             break;
       }
-      jx.data.player(player, 'permission')[permission] = value;
+      if (persist) {
+         jx.data.player(player, 'permission')[permission] = value;
+      }
    },
    /**
     * @callback jx_player$data
@@ -218,6 +222,7 @@ module.exports = {
     * // select all entities within 25 blocks of player
     * var entities = jx.query('e[distance=0..25]', player);
     */
+   profile: require('./profile.js'),
    query: function (selector, context) {
       selector = selector[0] === '@' ? selector : '@' + selector;
       return jx.ar(server.selectEntities(context || server.consoleSender, selector));
@@ -261,8 +266,10 @@ module.exports = {
    spawn: require('./spawn.js'),
    storage: {
       item: require('./storage/item.js'),
-      inventory: require('./storage/inventory.js')
+      inventory: require('./storage/inventory.js'),
+      component: require('./storage/component.js')
    },
+   territory: require('./territory.js'),
    /**
     * send a message to player
     * 

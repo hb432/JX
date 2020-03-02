@@ -249,65 +249,6 @@ module.exports = {
          return segment + suffix;
       });
    },
-   /**
-    * this is better explained by looking at the source code...
-    * 
-    * for each node provided, auto-fill undefined contexts along the data path
-    * @param {*} context the inital context
-    * @param {*} nodes the nodes to auto-fill
-    * @returns {*} the final context
-    */
-   textComponent: {
-      to: function (component) {
-         var output = {
-            bold: component.bold,
-            italic: component.italic,
-            obfuscated: component.obfuscated,
-            strikethrough: component.strikethrough,
-            text: component.text,
-            underline: component.underline
-         };
-         if (component.clickEvent) {
-            output.click = {
-               action: component.clickEvent.action.toString(),
-               value: component.clickEvent.value
-            };
-         }
-         if (component.hoverEvent) {
-            output.hover = {
-               action: component.hoverEvent.action.toString(),
-               value: jx.ar(component.hoverEvent.value).map(jx.util.textComponent.to)
-            };
-         }
-         if (component.colorRaw) output.color = component.colorRaw.name();
-         if (component.extra) output.extra = jx.ar(component.extra).map(jx.util.textComponent.to);
-         return output;
-      },
-      from: function (json) {
-         var color = Java.type('net.md_5.bungee.api.ChatColor');
-         var click = Java.type('net.md_5.bungee.api.chat.ClickEvent');
-         var hover = Java.type('net.md_5.bungee.api.chat.HoverEvent');
-         var component = Java.type('net.md_5.bungee.api.chat.TextComponent');
-         var clickAction = Java.type('net.md_5.bungee.api.chat.ClickEvent$Action');
-         var hoverAction = Java.type('net.md_5.bungee.api.chat.HoverEvent$Action');
-         var output = new component(json.text);
-         output.bold = json.bold;
-         output.italic = json.italic;
-         output.obfuscated = json.obfuscated;
-         output.strikethrough = json.strikethrough;
-         output.underline = json.underline;
-         if (json.click) {
-            output.clickEvent = new click(clickAction[json.click.action], json.click.value);
-         }
-         if (json.hover) {
-            var value = json.hover.value.map(jx.util.textComponent.from);
-            output.hoverEvent = new hover(hoverAction[json.hover.action], value);
-         }
-         if (json.color) output.color = color[json.color];
-         if (json.extra) output.extra = json.extra.map(jx.util.textComponent.from);
-         return output;
-      }
-   },
    traverse: function (context, nodes) {
       jx.ar(nodes).forEach(function (node) {
          context = jx.util.auto(context, node, {});
