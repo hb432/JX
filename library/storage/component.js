@@ -41,11 +41,11 @@ module.exports = {
       if (component.hoverEvent) {
          output.hover = {
             action: component.hoverEvent.action.toString().toLowerCase(),
-            value: jx.ar(component.hoverEvent.value).map(jx.util.textComponent.to)
+            value: jx.ar(component.hoverEvent.value).map(jx.storage.component.save)
          };
       }
       if (component.colorRaw) output.color = component.colorRaw.name();
-      if (component.extra) output.extra = jx.ar(component.extra).map(jx.util.textComponent.to);
+      if (component.extra) output.extra = jx.ar(component.extra).map(jx.storage.component.save);
       return output;
    },
    /**
@@ -71,11 +71,11 @@ module.exports = {
          output.clickEvent = new click(clickAction[json.click.action.toUpperCase()], value);
       }
       if (json.hover) {
-         var value = json.hover.value.map(jx.util.textComponent.from);
+         var value = json.hover.value.map(jx.storage.component.load);
          output.hoverEvent = new hover(hoverAction[json.hover.action.toUpperCase()], value);
       }
       if (json.color) output.color = color[json.color];
-      if (json.extra) output.extra = json.extra.map(jx.util.textComponent.from);
+      if (json.extra) output.extra = json.extra.map(jx.storage.component.load);
       return output;
    }
 };

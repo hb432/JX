@@ -61,7 +61,7 @@ module.exports = {
          case 'written_book':
             data.unique = {
                pages: jx.ar(meta.spigot().pages).map(function (page) {
-                  return jx.ar(page).map(jx.util.textComponent.to);
+                  return jx.ar(page).map(jx.storage.component.save);
                }),
                title: meta.title,
                author: meta.author,
@@ -218,7 +218,7 @@ module.exports = {
                   meta.pages = (new Array(data.unique.pages.length).join('x.') + 'x').split('.');
                   data.unique.pages.forEach(function (page, index) {
                      var internal = meta.spigot().pages[index];
-                     internal[0] = jx.util.textComponent.from({ text: '', extra: page });
+                     internal[0] = jx.storage.component.load({ text: '', extra: page });
                      meta.spigot().setPage(index + 1, internal);
                   });
                }
