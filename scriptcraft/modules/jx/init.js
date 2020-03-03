@@ -1,4 +1,63 @@
 module.exports = function () {
+   jx.event.player.click(function (x, inventory, instance, y, z, event) {
+      var data = jx.data.server('interface');
+      var hash = inventory.hashCode().toString();
+      if (data[hash]) {
+         event.setCancelled(true);
+         var item = data[hash][event.slot];
+         if (item.event) {
+            jx.event.fire(item.event, instance);
+         }
+         if (item.command) {
+            instance.chat(item.command);
+         }
+         if (item.trigger) {
+            eval(item.trigger)(instance);
+         }
+      }
+   });
+   jx.event.player.close(function (x, inventory) {
+      var data = jx.data.server('interface');
+      var hash = inventory.hashCode().toString();
+      if (data[hash]) {
+         data[hash] = void 0;
+      }
+   });
+   jx.event.player.join(function (player, instance) {
+      jx.data.server('players')[player.uuid] = instance.name;
+      player.effectivePermissions.forEach(function (info) {
+         player.removeAttachment(info.attachment);
+      });
+      var groups = jx.data.server('group');
+      Object.keys(groups).forEach(function (name) {
+         var group = groups[name];
+         if (group.players[player.uuid]) {
+            var perms = [];
+            Object.keys(group.parents).forEach(function (name) {
+               if (group.parents[name]) {
+                  var parent = groups[name];
+                  Object.keys(parent.permissions).forEach(function (node) {
+                     if (parent.permissions[node] != null) {
+                        perms.push([ node, parent.permissions[node] ]);
+                     }
+                  });
+               }
+            });
+            Object.keys(group.permissions).forEach(function (node) {
+               if (group.permissions[node] != null) {
+                  perms.push([ node, group.permissions[node] ]);
+               }
+            });
+            perms.forEach(function (perm) {
+               jx.permission(instance, perm[0], perm[1]);
+            });
+         }
+      });
+      var perm = player.data('permission');
+      Object.keys(perm).forEach(function (key) {
+         jx.permission(instance, key, perm[key]);
+      });
+   });
    Object.keys(jx.api).forEach(function (key) {
       var enumeration = jx.api[key];
       jx.api[key] = {};
@@ -70,65 +129,6 @@ module.exports = function () {
                   break;
             }
          }
-      });
-   });
-   jx.event.player.click(function (x, inventory, instance, y, z, event) {
-      var data = jx.data.server('interface');
-      var hash = inventory.hashCode().toString();
-      if (data[hash]) {
-         event.setCancelled(true);
-         var item = data[hash][event.slot];
-         if (item.event) {
-            jx.event.fire(item.event, instance);
-         }
-         if (item.command) {
-            instance.chat(item.command);
-         }
-         if (item.trigger) {
-            eval(item.trigger)(instance);
-         }
-      }
-   });
-   jx.event.player.close(function (x, inventory) {
-      var data = jx.data.server('interface');
-      var hash = inventory.hashCode().toString();
-      if (data[hash]) {
-         data[hash] = void 0;
-      }
-   });
-   jx.event.player.join(function (player, instance) {
-      jx.data.server('players')[player.uuid] = instance.name;
-      player.effectivePermissions.forEach(function (info) {
-         player.removeAttachment(info.attachment);
-      });
-      var groups = jx.data.server('group');
-      Object.keys(groups).forEach(function (name) {
-         var group = groups[name];
-         if (group.players[player.uuid]) {
-            var perms = [];
-            Object.keys(group.parents).forEach(function (name) {
-               if (group.parents[name]) {
-                  var parent = groups[name];
-                  Object.keys(parent.permissions).forEach(function (node) {
-                     if (parent.permissions[node] != null) {
-                        perms.push([ node, parent.permissions[node] ]);
-                     }
-                  });
-               }
-            });
-            Object.keys(group.permissions).forEach(function (node) {
-               if (group.permissions[node] != null) {
-                  perms.push([ node, group.permissions[node] ]);
-               }
-            });
-            perms.forEach(function (perm) {
-               jx.permission(instance, perm[0], perm[1]);
-            });
-         }
-      });
-      var perm = player.data('permission');
-      Object.keys(perm).forEach(function (key) {
-         jx.permission(instance, key, perm[key]);
       });
    });
    Object.keys(jx.util).forEach(function (key) {

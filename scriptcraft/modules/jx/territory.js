@@ -144,16 +144,13 @@ module.exports = function (player) {
    };
 };
 
-var key = function (query) {
+var key = (module.exports.key = function (query) {
    if (query.instance) query = query.instance;
    if (query.location) query = query.location;
    var location = jx.util.loc(query);
    return location.world.name + ':' + location.chunk.x + ':' + location.chunk.z;
-};
+});
 
-var state = function (location) {
+var state = (module.exports.state = function (location) {
    return jx.data.server('territory', 'claims')[key(location)];
-};
-
-module.exports.key = key;
-module.exports.state = state;
+});

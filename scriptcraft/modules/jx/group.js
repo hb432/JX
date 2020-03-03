@@ -2,12 +2,12 @@
  * functions for group-based permission management
  * @param {string} name the group to access
  * @returns {{
-   *    parent: group$parent,
-   *    permission: group$permission,
-   *    player: group$player,
-   *    property: group$property,
-   * }}
-   */
+ *    parent: group$parent,
+ *    permission: group$permission,
+ *    player: group$player,
+ *    property: group$property,
+ * }}
+ */
 module.exports = function (name) {
    var groups = jx.data.server('group');
    var group = jx.util.auto(groups, name, {
@@ -169,7 +169,7 @@ module.exports = function (name) {
    };
 };
 
-var update = function () {
+var update = (module.exports.update = function () {
    jx.all(function (player) {
       var instance = player.instance;
       instance.effectivePermissions.forEach(function (info) {
@@ -207,6 +207,4 @@ var update = function () {
          jx.permission(instance, key, perm[key]);
       });
    });
-};
-
-module.exports.update = update;
+});

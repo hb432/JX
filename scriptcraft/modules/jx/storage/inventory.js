@@ -45,9 +45,9 @@ module.exports = {
     * // display a stored inventory for a player
     * jx.storage.inventory.open(player, data, 'stored inventory');
     */
-   open: function (player, data, title) {
+   open: function (player, data, title, rows) {
       var instance = jx.player(player).instance;
-      var inv = server.createInventory(instance, 6 * 9, title);
+      var inv = server.createInventory(instance, rows || 6 * 9, title);
       jx.storage.inventory.load({ inventory: inv }, data);
       instance.openInventory(inv);
    }
