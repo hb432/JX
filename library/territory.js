@@ -1,20 +1,3 @@
-// import module
-var jx = require('./../index.js');
-
-// get claim key of chunk
-var key = function (query) {
-   if (query.instance) query = query.instance;
-   if (query.location) query = query.location;
-   var location = jx.util.loc(query);
-   return location.world.name + ':' + location.chunk.x + ':' + location.chunk.z;
-};
-
-// get claim state of chunk
-var state = function (location) {
-   return jx.data.server('territory', 'claims')[key(location)];
-};
-
-// export
 /**
  * functions for claiming chunks and trusting players
  * @param {} player the target player
@@ -159,6 +142,17 @@ module.exports = function (player) {
          else return jx.data.player(claimant, 'territory', 'trusts')[player.uuid] === true;
       }
    };
+};
+
+var key = function (query) {
+   if (query.instance) query = query.instance;
+   if (query.location) query = query.location;
+   var location = jx.util.loc(query);
+   return location.world.name + ':' + location.chunk.x + ':' + location.chunk.z;
+};
+
+var state = function (location) {
+   return jx.data.server('territory', 'claims')[key(location)];
 };
 
 module.exports.key = key;
