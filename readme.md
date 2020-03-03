@@ -17,7 +17,7 @@ setTimeout(function () {
 
 ### Usage: Basic Example 1 (Spectral Creepers)
 Yeah, these creepers should be avoided. Instant fuse, impossible to damage, and worst of all, a massive explosion. Damn!
-```
+```javascript
 setTimeout(function () {
 
    // wait for entity spawns
@@ -49,7 +49,7 @@ setTimeout(function () {
 
 ### Usage: Basic Example 2 (Event Sounds)
 Joining, Leaving, and Chatting will all trigger sound effects for the whole server to hear!
-```
+```javascript
 setTimeout(function () {
    
    // play a higher-pitch buzz when someone joins
@@ -93,7 +93,7 @@ setTimeout(function () {
 
 ### Usage: Basic Example 3 (Sky Chest)
 Access your ender chest by looking directly upwards!
-```
+```javascript
 setTimeout(function () {
    
    // check for player movement
