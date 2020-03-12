@@ -124,28 +124,29 @@ module.exports = {
          var item = items[key].item;
          if (jx.ty(item) === 'string') item = jx.spawn.item(item);
          else if (jx.ty(item) === 'Array') item = jx.spawn.item.apply(0, item);
+         else item = item.item || item;
          if (items[key].title) item = $(item).meta('displayName', jx.color(items[key].title)).item;
          if (items[key].description) item = $(item).meta('lore', items[key].description).item;
-         inv.setItem(slot, $(item.item || item).flag('attributes').item);
+         inv.setItem(slot, $(item).flag('attributes').item);
          data[uuid][slot] = {
             command: items[key].command,
             event: items[key].event,
-            trigger: items[key].trigger ? items[key].trigger + '' : void 0
+            trigger: items[key].trigger ? items[key].trigger + '' : void 0,
+            data: items[key].data
          };
       });
       player.openInventory(inv);
    },
    /**
-    * modify a permission of a player
+    * modify a permission of an online player
     * @param {*} target the player to modify a permission of
     * @param {string} permission the permission to modify
     * @param {boolean} value the permission value, omit to remove explicit value
-    * @param {boolean} persist if true, persist across refresh, reloads, and restarts
     * @example
     * // grant "worldedit.*" to a player
     * jx.permission(player, 'worldedit.*', true);
     */
-   permission: function (target, permission, value, persist) {
+   permission: function (target, permission, value) {
       var player = jx.player(target).instance;
       switch (value) {
          case null:
@@ -161,9 +162,6 @@ module.exports = {
             var plugin = server.pluginManager.getPlugin('scriptcraft');
             player.addAttachment(plugin, permission, value);
             break;
-      }
-      if (persist) {
-         jx.data.player(player, 'permission')[permission] = value;
       }
    },
    /**

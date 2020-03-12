@@ -12,7 +12,7 @@ module.exports = function () {
             instance.chat(item.command);
          }
          if (item.trigger) {
-            eval(item.trigger)(instance);
+            eval(item.trigger)(instance, item.data);
          }
       }
    });
@@ -25,38 +25,7 @@ module.exports = function () {
    });
    jx.event.player.join(function (player, instance) {
       jx.data.server('players')[player.uuid] = instance.name;
-      player.effectivePermissions.forEach(function (info) {
-         player.removeAttachment(info.attachment);
-      });
-      var groups = jx.data.server('group');
-      Object.keys(groups).forEach(function (name) {
-         var group = groups[name];
-         if (group.players[player.uuid]) {
-            var perms = [];
-            Object.keys(group.parents).forEach(function (name) {
-               if (group.parents[name]) {
-                  var parent = groups[name];
-                  Object.keys(parent.permissions).forEach(function (node) {
-                     if (parent.permissions[node] != null) {
-                        perms.push([ node, parent.permissions[node] ]);
-                     }
-                  });
-               }
-            });
-            Object.keys(group.permissions).forEach(function (node) {
-               if (group.permissions[node] != null) {
-                  perms.push([ node, group.permissions[node] ]);
-               }
-            });
-            perms.forEach(function (perm) {
-               jx.permission(instance, perm[0], perm[1]);
-            });
-         }
-      });
-      var perm = player.data('permission');
-      Object.keys(perm).forEach(function (key) {
-         jx.permission(instance, key, perm[key]);
-      });
+      jx.group.update();
    });
    Object.keys(jx.api).forEach(function (key) {
       var enumeration = jx.api[key];
@@ -123,9 +92,7 @@ module.exports = function () {
             switch (key) {
                case 'attribute':
                   var vanilla2 = value.name().toLowerCase().split('_');
-                  jx.api[key][
-                     vanilla2[0] + '.' + jx.util.camel(vanilla2.slice(1).join(' '))
-                  ] = value;
+                  jx.api[key][vanilla2[0] + '.' + jx.util.camel(vanilla2.slice(1).join(' '))] = value;
                   break;
             }
          }

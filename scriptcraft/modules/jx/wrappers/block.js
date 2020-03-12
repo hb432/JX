@@ -16,15 +16,21 @@ module.exports = function (subject) {
       if (container) {
          set = container.raw.entrySet();
       } else {
+         set = [];
+         container = {
+            set: function () {}
+         };
          // dirty data storage, need a cleaner method
+         /*
+         var loc = block.location;
          var path = [ loc.world.name, loc.chunk.x + ':' + loc.chunk.z, loc.y, loc.x + ':' + loc.z ];
          container = {
             set: function (key, type, value) {
                jx.util.traverse(persist('jx-block-data'), path)[key.key] = value;
             }
          };
-         var loc = block.location;
          set = jx.util.traverse(persist('jx-block-data'), path);
+         */
       }
       var entries = {};
       jx.ar(set).forEach(function (entry) {

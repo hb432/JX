@@ -35,10 +35,10 @@ module.exports = function (player) {
          if (teleport) instance.teleport(jx.util.loc(profile.location));
       },
       reset: function (teleport) {
+         var instance = player.instance;
          jx.ar(org.bukkit.potion.PotionEffectType.values()).forEach(function (entry) {
             if (instance.getPotionEffect(entry)) instance.removePotionEffect(entry);
          });
-         var instance = player.instance;
          instance.enderChest.clear();
          instance.inventory.clear();
          instance.foodLevel = 20;

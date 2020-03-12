@@ -41,6 +41,9 @@ module.exports = {
       if (meta.damage) {
          data.damage = meta.damage;
       }
+      if (meta.repairCost) {
+         data.cost = meta.repairCost;
+      }
       switch (_(stack)) {
          case 'enchanted_book':
             data.unique = {};
@@ -136,18 +139,18 @@ module.exports = {
             break;
          case 'player_head':
             data.unique = {
-               owner: meta.owner,
                textures: []
             };
+            if (meta.owningPlayer) {
+               data.unique.uuid = String(meta.owningPlayer.uniqueId);
+            }
             if (meta.playerProfile) {
+               data.unique.name = meta.playerProfile.name;
                jx.ar(meta.playerProfile.properties).forEach(function (entry) {
                   if (entry.name === 'textures') {
                      data.unique.textures.push(entry.value);
                   }
                });
-            }
-            if (!data.unique.textures.length) {
-               data.unique.textures = null;
             }
             break;
       }
@@ -198,6 +201,9 @@ module.exports = {
       }
       if (data.damage) {
          meta.setDamage(data.damage);
+      }
+      if (data.cost) {
+         meta.setRepairCost(data.cost);
       }
       if (data.unique) {
          switch (data.type) {
@@ -288,7 +294,16 @@ module.exports = {
                meta.setEffect(effect.build());
                break;
             case 'player_head':
-               data.unique.forEach(function (texture) {});
+               meta.setOwningPlayer(server.getOfflinePlayer(java.util.UUID.fromString(data.unique.uuid)));
+               var profile = meta.playerProfile;
+               if (data.unique.name) {
+                  profile.name = data.unique.name;
+               }
+               var prop = Java.type('com.destroystokyo.paper.profile.ProfileProperty');
+               data.unique.textures.forEach(function (texture) {
+                  profile.setProperty(new prop('textures', texture));
+               });
+               meta.setPlayerProfile(profile);
                break;
          }
          if (data.type.endsWith('banner')) {

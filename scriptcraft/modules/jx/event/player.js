@@ -212,7 +212,7 @@ module.exports = {
          listener('none', jx.player(event.player), null, event.player, event);
       });
       jx.event.on('playerInteractEntity', function (event) {
-         listener('entity', jx.player(event.player), event.clickedEntity, event.player, event);
+         listener('entity', jx.player(event.player), event.rightClicked, event.player, event);
       });
    },
    /**
