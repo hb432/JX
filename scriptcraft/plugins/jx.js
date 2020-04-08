@@ -1,2 +1,3 @@
-var jx = (global.jx = require('./../modules/jx/index.js'));
-jx.init();
+var index = require('./../modules/jx/index.js');
+global.jx = index.jx;
+global.$ = index.$;
