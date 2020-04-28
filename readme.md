@@ -20,11 +20,8 @@ Yeah, these creepers should be avoided. Instant fuse, impossible to damage, and 
 ```javascript
 setTimeout(function () {
 
-   // wait for entity spawns
-   jx.event.entity.spawn(function (entity) {
-
-      // ignore non-creeper spawns
-      if (_(entity) !== 'creeper') return false;
+   // wait for creeper spawns
+   $({ on: 'spawn', entity: 'creeper' }, function (entity) {
 
       // 1 out of 7 creeper spawns will be spectral
       if (!jx.rand.chance(1 / 7)) return false;
@@ -53,7 +50,7 @@ Joining, Leaving, and Chatting will all trigger sound effects for the whole serv
 setTimeout(function () {
    
    // play a higher-pitch buzz when someone joins
-   jx.event.player.join(function (joiner) {
+   $({ on: 'join' }, function (joiner) {
 
       // for all online players
       jx.all(function (player) {
@@ -66,7 +63,7 @@ setTimeout(function () {
    });
 
    // play a lower-pitch buzz when someone quits
-   jx.event.player.quit(function (quitter) {
+   $({ on: 'quit' }, function (quitter) {
 
       // for all online players
       jx.all(function (player) {
